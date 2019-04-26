@@ -96,7 +96,8 @@ for k in range(1, 16):
     train_data = {'x': x_train, 'y': y_train}
     knn = KNN(nb_features, nb_classes, train_data, k, weighted=False)
     accuracy = knn.predict({'x': x_test, 'y': y_test})
-    print('Test set accuracy: ', accuracy)
+    # print('Test set accuracy: ', accuracy)
+    print('Test set accuracy: ' + str(round(accuracy * 100, 2)) + ' %.')
 
 
 # TODO Napraviti grafik i napisati komentar
