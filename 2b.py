@@ -2,6 +2,7 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 
 def create_feature_matrix(x, nb_features):
@@ -87,9 +88,9 @@ for l in range(0, 7):
         final_loss = sess.run(loss, feed_dict={X: data_help['x'], Y: data_help['y']})  # ???
         print("Final loss: {}".format(final_loss))
         stepeni[l] = final_loss
-        if l is 6:
-            writer = tf.summary.FileWriter("output", sess.graph)
-            writer.close()
+        # if l is 6:
+        #     writer = tf.summary.FileWriter("output", sess.graph)
+        #     writer.close()
 
 plt.xlim([-2, 4])
 plt.ylim([-3, 4])
@@ -105,8 +106,7 @@ plt.ylabel('LOSS')
 plt.show()
 
 
-
-
+# TODO Napisati komentar i napraviti preko TensorBuild prikaz grafa
 
 
 

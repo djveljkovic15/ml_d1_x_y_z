@@ -90,17 +90,5 @@ plt.plot(stepeni.values(), stepeni.keys(), color='g')
 plt.show()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+# TODO Napisati komentar
 
