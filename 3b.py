@@ -90,14 +90,35 @@ test_x = np.reshape(x_test, [nb_test, -1])
 
 nb_features = 2  # 4
 nb_classes = 3
+accuracys = []
+
 for k in range(1, 16):
     print(k)
     # k = 3
     train_data = {'x': x_train, 'y': y_train}
     knn = KNN(nb_features, nb_classes, train_data, k, weighted=False)
     accuracy = knn.predict({'x': x_test, 'y': y_test})
+    accuracys.append(accuracy)
     # print('Test set accuracy: ', accuracy)
     print('Test set accuracy za k=' + str(k) + ': ' + str(round(accuracy * 100, 2)) + ' %.')
 
+ks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
-# TODO Napraviti grafik i napisati komentar
+# print(accuracys[0])
+# print(accuracys[1])
+# print()
+# print(ks[0])
+# print(ks[1])
+
+
+for i in range(1, 15):
+    plt.plot([i, i+1], [accuracys[i-1], accuracys[i]], '-o')  # Mozda je lepse sa '-o'
+
+# for k in range(14):
+#     plt.plot([ks[k], ks[k + 1]], [accuracys[k], accuracys[k + 1]], '-bo')
+
+plt.xlabel('K')
+plt.ylabel('ACCURACY')
+plt.show()
+
+# TODO Proveriti grafik i napisati komentar
