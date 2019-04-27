@@ -1,5 +1,11 @@
-pandas
-tensorboard==1.13.1
-numpy
 matplotlib==2.1.1
+nltk==3.2.5
+numpy==1.16.2
+pandas==0.24.2
+scikit-learn==0.20.3
+sklearn==0.0
+tensorboard==1.13.1
 tensorflow==1.13.1
+tensorflow-estimator==1.13.0
+tensorflow-tensorboard==1.5.1
+termcolor==1.1.0
