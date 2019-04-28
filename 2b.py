@@ -87,10 +87,14 @@ for l in range(0, 7):
         final_loss = sess.run(loss, feed_dict={X: data_help['x'], Y: data_help['y']})  # ???
         print("Final loss: {}".format(final_loss))
         stepeni[l] = final_loss
-        if l is 6:  # tensorboard --logdir=output
-                    # Komanda da se napravi graf. Kod mene iz nekog razloga ne radi i nisam uspeo da popravim.
-            writer = tf.summary.FileWriter("output", sess.graph)
-            writer.close()
+        # if l is 6:  # tensorboard --logdir=output
+        #             # Komanda da se napravi graf. Kod mene iz nekog razloga ne radi i nisam uspeo da popravim.
+        #     writer = tf.summary.FileWriter("output", sess.graph)
+        #     writer.close()
+
+writer = tf.summary.FileWriter('output')
+writer.add_graph(tf.get_default_graph())
+writer.flush()
 
 plt.xlim([-2, 4])
 plt.ylim([-3, 4])

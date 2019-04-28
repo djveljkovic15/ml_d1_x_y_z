@@ -70,9 +70,10 @@ class KNN:
             return accuracy
 
 
+# Učitavanje i obrada podataka
 iris = pd.read_csv('data/iris.csv')
 
-feature_columns = ['sepal_length', 'sepal_width']  # , 'petal_length', 'petal_width']
+feature_columns = ['sepal_length', 'sepal_width']
 
 x = iris[feature_columns].values
 y = iris['species'].values
@@ -80,42 +81,83 @@ y = iris['species'].values
 le = LabelEncoder()
 y = le.fit_transform(y)
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=1/5, random_state=0)
+nacin = 1  # Postoje 2 nacina, prvi je "obican", drugi je sa normalizacijom i nasumicnim mesanjem.
+normalizacija = True  # Ukoliko hoces sa normalizacijom (samo drugi nacin)
 
-nb_train = len(y_train)
-nb_test = len(y_test)
+if nacin == 1:
+    # Prvi nacin.
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=1 / 5, random_state=0)
 
-train_x = np.reshape(x_train, [nb_train, -1])
-test_x = np.reshape(x_test, [nb_test, -1])
+    nb_train = len(y_train)
+    nb_test = len(y_test)
 
-nb_features = 2  # 4
-nb_classes = 3
-accuracys = []
+    train_x = np.reshape(x_train, [nb_train, -1])
+    test_x = np.reshape(x_test, [nb_test, -1])
 
-for k in range(1, 16):
-    print(k)
-    # k = 3
-    train_data = {'x': x_train, 'y': y_train}
-    knn = KNN(nb_features, nb_classes, train_data, k, weighted=False)
-    accuracy = knn.predict({'x': x_test, 'y': y_test})
-    accuracys.append(accuracy)
-    # print('Test set accuracy: ', accuracy)
-    print('Test set accuracy za k=' + str(k) + ': ' + str(round(accuracy * 100, 2)) + ' %.')
+    nb_features = 2
+    nb_classes = 3
+    accuracys = []
+    for k in range(1, 16):
+        print(k)
+        train_data = {'x': x_train, 'y': y_train}
+        knn = KNN(nb_features, nb_classes, train_data, k, weighted=False)
+        accuracy = knn.predict({'x': x_test, 'y': y_test})
+        accuracys.append(accuracy)
+        # print('Test set accuracy: ', accuracy)
+        print('Test set accuracy za k=' + str(k) + ': ' + str(round(accuracy * 100, 2)) + ' %.')
+else:
+    # Drugi nacin, sa nasumicnim mesanje, i mogucom normalizacijom.
+    nb_features = 2
+    nb_classes = 3
+    accuracys = []
 
-ks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    data = dict()
+    data['x'] = x
+    data['y'] = y
 
-# print(accuracys[0])
-# print(accuracys[1])
-# print()
-# print(ks[0])
-# print(ks[1])
+    # Nasumično mešanje.
+    nb_samples = data['x'].shape[0]
+    indices = np.random.permutation(nb_samples)
+    data['x'] = data['x'][indices]
+    data['y'] = data['y'][indices]
+
+    if normalizacija is True:
+        # Normalizacija,
+        data['x'] = (data['x'] - np.mean(data['x'], axis=0)) / np.std(data['x'], axis=0)
+
+    # Trening-Test delovi.
+    training_ratio = 0.8
+    test_ratio = 0.2
+
+    nb_train = int(training_ratio * nb_samples)
+    data_train = dict()
+    data_train['x'] = data['x'][:nb_train]
+    data_train['y'] = data['y'][:nb_train]
+
+    nb_test = nb_samples - nb_train
+    data_test = dict()
+    data_test['x'] = data['x'][nb_train:]
+    data_test['y'] = data['y'][nb_train:]
+
+    # Pokrecemo kNN na test skupu.
+    for k in range(1, 16):
+        print(k)
+        # k = 3
+        train_data = {'x': data_train['x'], 'y': data_train['y']}
+        knn = KNN(nb_features, nb_classes, train_data, k, weighted=False)
+        accuracy = knn.predict({'x': data_test['x'], 'y': data_test['y']})
+        accuracys.append(accuracy)
+        # print('Test set accuracy: ', accuracy)
+        print('Test set accuracy za k=' + str(k) + ': ' + str(round(accuracy * 100, 2)) + ' %.')
 
 
+# Crtanje grafa.
 for i in range(1, 15):
-    plt.plot([i, i+1], [accuracys[i-1], accuracys[i]], '-o')  # Mozda je lepse sa '-o'
+    plt.plot([i, i + 1], [accuracys[i - 1], accuracys[i]], '-o')
 
+# ks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 # for k in range(14):
-#     plt.plot([ks[k], ks[k + 1]], [accuracys[k], accuracys[k + 1]], '-bo')
+#     plt.plot([ks[k], ks[k + 1]], [accuracys[k], accuracys[k + 1]], '-o')
 
 plt.xlabel('K')
 plt.ylabel('ACCURACY')
