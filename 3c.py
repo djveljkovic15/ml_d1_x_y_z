@@ -122,9 +122,9 @@ else:
     data['x'] = data['x'][indices]
     data['y'] = data['y'][indices]
 
-    # Normalizacija,
-    # data['x'] = (data['x'] - np.mean(data['x'], axis=0)) / np.std(data['x'], axis=0)
-    # Ako treba normalizacija odkomentarisati. Ali bolje izgleda bez :D
+    if normalizacija is True:
+        # Normalizacija,
+        data['x'] = (data['x'] - np.mean(data['x'], axis=0)) / np.std(data['x'], axis=0)
 
     # Trening-Test delovi.
     training_ratio = 0.8
