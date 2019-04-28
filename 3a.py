@@ -80,13 +80,13 @@ feature_columns = ['sepal_length', 'sepal_width']
 x = iris[feature_columns].values
 y = iris['species'].values
 species = np.unique(y)
-print(species)
+# print(species)
 
 le = LabelEncoder()
 y = le.fit_transform(y)
 
-nacin = 1   # Postoje 2 nacina, prvi je "obican", drugi je sa normalizacijom i nasumicnim mesanjem.
-normalizacija = True   # Ukoliko hoces sa normalizacijom (samo drugi nacin)
+nacin = 1  # Postoje 2 nacina, prvi je "obican", drugi je sa normalizacijom i nasumicnim mesanjem.
+normalizacija = True  # Ukoliko hoces sa normalizacijom (samo drugi nacin)
 
 if nacin == 1:
     # Prvi nacin.
@@ -102,7 +102,7 @@ if nacin == 1:
     nb_classes = 3
     k = 3
     train_data = {'x': x_train, 'y': y_train}
-    data = train_data   # can i?
+    data = train_data  # can i?
     knn = KNN(nb_features, nb_classes, train_data, k, weighted=False)
     accuracy, _ = knn.predict({'x': x_test, 'y': y_test})
     # print('Test set accuracy: ', accuracy)
@@ -127,7 +127,7 @@ else:
 
     # Trening-Test delovi.
     training_ratio = 0.8
-    test_ratio = 0.2
+
 
     nb_train = int(training_ratio * nb_samples)
     data_train = dict()
@@ -147,20 +147,21 @@ else:
     accuracy, _ = knn.predict({'x': data_test['x'], 'y': data_test['y']})
     print('Test set accuracy za k=' + str(k) + ': ' + str(round(accuracy * 100, 2)) + ' %.')
 
-
 # Generisemo grid.
 step_size = 0.01
 x1, x2 = np.meshgrid(
-    np.arange(min(data['x'][:, 0]), max(data['x'][:, 0]),   # data = train_data
+    np.arange(min(data['x'][:, 0]), max(data['x'][:, 0]),  # data = train_data
               step_size),
     np.arange(min(data['x'][:, 1]), max(data['x'][:, 1]),
               step_size))
 x_feed = np.vstack((x1.flatten(), x2.flatten())).T
 
 # Racunamo vrednost hipoteze.
-accuracy, pred_val = knn.predict({'x': x_feed, 'y': None})
+_, pred_val = knn.predict({'x': x_feed, 'y': None})
 # print(pred_val)
+# print(type(pred_val))
 pred_val = np.array(pred_val)
+# print(type(pred_val))
 # print(pred_val)
 pred_plot = pred_val.reshape([x1.shape[0], x1.shape[1]])
 

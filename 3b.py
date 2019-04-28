@@ -1,3 +1,5 @@
+import statistics
+
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -150,14 +152,11 @@ else:
         # print('Test set accuracy: ', accuracy)
         print('Test set accuracy za k=' + str(k) + ': ' + str(round(accuracy * 100, 2)) + ' %.')
 
+print('Test set accuracy za sve K zajedno je: ' + str(round(statistics.mean(accuracys) * 100, 2)) + ' %.')
 
 # Crtanje grafa.
 for i in range(1, 15):
     plt.plot([i, i + 1], [accuracys[i - 1], accuracys[i]], '-o')
-
-# ks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-# for k in range(14):
-#     plt.plot([ks[k], ks[k + 1]], [accuracys[k], accuracys[k + 1]], '-o')
 
 plt.xlabel('K')
 plt.ylabel('ACCURACY')
