@@ -1,1 +1,27 @@
-TODO popuniti odgovorima na pitanja iz problema 1
+
+a)Word2vec
+
+    Word2vec se koristi kao model u "word embedding"-u.
+    Word embedding predstavljaju reci ili fraze preko kojih se mapiraju vektori.
+
+    Namena ovog modela je da grupise vektore slicnih reci, odnosno reci slicnog konteksta u vektorskom prostoru.
+    Primenjuje se u DeepLearning, prepoznavanju govora, analizi teksta itd
+
+
+b)K-fold cross-validation
+
+    K-fold cross-validation se koristi za maksimalno iskoriscenje raspolozivih podataka za obuku, ova tehnika random
+    razdvaja skup podataka na k foldova, gde je jedan fold test a ostali su train. Validacija se zavrsava kada kroz obuku
+    prodju svi moguci test primeri,  tj k puta se izvrsava. Resenje je prosek svih k rezultata.
+    Daje preciznije rezultate od klasicne validacije.
+
+
+
+c)Linearna separabilnost
+
+    U 2d prostoru, 2 skupa tacaka su linearno separabilni ukoliko izmedju njih mozemo povuci liniju tako da jedan skup
+    tacaka bude sa jedne a drugi sa suprotne strane linije. Sto je veca dimenzija prostora, pokusavamo da podelimo
+    prostor sa hiperravni dimenzije n-1, tako da ponovo postignemo da svaki skup tacaka bude sa suprotne strane.
+    Primer linearne neseparabilne jeste 'xor' funkcija gde je predstavljeno u nulama i jedinicama.
+    Zakljucak je da podaci iz 'logreg_data.csv' nisu linearno separabilni sto se jasno vidi sa grafika.
+

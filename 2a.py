@@ -90,5 +90,11 @@ plt.plot(stepeni.values(), stepeni.keys(), color='g')
 plt.show()
 
 
-# TODO Napisati komentar
+# Komentar:
+# Na prvom grafu mozemo primetiti da je na prvih par stepena skoro pa linearna dok je od 3. stepena kriva.
+# Posle 3. stepena krece overfitting.
+#
+# Na drugom grafiku mozemo primetiti da je najbolji loss u stepenu polinoma 3
+# gde je opao do minimuma a onda blago raste.
+
 

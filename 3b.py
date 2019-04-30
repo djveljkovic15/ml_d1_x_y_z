@@ -162,4 +162,7 @@ plt.xlabel('K')
 plt.ylabel('ACCURACY')
 plt.show()
 
-# TODO Proveriti grafik i napisati komentar
+# Komentar:
+# U slucaju kada su podaci randomizovani najbolje K varira, obicno pocinje sa manjom accuracy pa raste oko 2-4,
+# ali testovi nisu pouzdani.
+# U slucaju kada su podaci fiksni imamo najvisi accuracy dok je K=4, a onda naglo opada.

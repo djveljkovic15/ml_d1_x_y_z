@@ -187,5 +187,3 @@ plt.scatter(train_data['x'][idxs_2, 0], train_data['x'][idxs_2, 1], c='y',
 plt.legend()
 
 plt.show()
-
-# TODO Napraviti graf(2D, vrlo slican kao kod SoftmaxRegresije) i napisati komentar

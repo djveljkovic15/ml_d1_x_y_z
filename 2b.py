@@ -32,35 +32,41 @@ lambdas = [0, 0.001, 0.01, 0.1, 1, 10, 100]
 data_help = dict()
 stepeni = dict()
 
-
+# for lb in lambdas:
 for l in range(0, 7):
-    for i in range(1, nb_features + 1):
-        data_help['x'] = data['x']
-        data_help['y'] = data['y']
-        print("Krug {}".format(i))
-        print('Originalne vrednosti (prve 3):')
-        print(data_help['x'][:3])
-        print('Feature matrica (prva 3 reda):')
-        data_help['x'] = create_feature_matrix(data_help['x'], i)
-        print(data_help['x'][:3, :])
 
-        plt.scatter(data_help['x'][:, 0], data_help['y'])
-        plt.xlabel('X')
-        plt.ylabel('Y')
+    data_help['x'] = data['x']
+    data_help['y'] = data['y']
+    print("Krug {}".format(l))
+    print('Originalne vrednosti (prve 3):')
+    print(data_help['x'][:3])
+    print('Feature matrica (prva 3 reda):')
+    data_help['x'] = create_feature_matrix(data_help['x'], 3)
+    print(data_help['x'][:3, :])
 
-        X = tf.placeholder(shape=(None, i), dtype=tf.float32)
-        Y = tf.placeholder(shape=None, dtype=tf.float32)
-        w = tf.Variable(tf.zeros(i))
-        bias = tf.Variable(0.0)
+    plt.scatter(data_help['x'][:, 0], data_help['y'])
+    plt.xlabel('X')
+    plt.ylabel('Y')
 
-        w_col = tf.reshape(w, (i, 1))
-        hyp = tf.add(tf.matmul(X, w_col), bias)
+    X = tf.placeholder(shape=(None, 3), dtype=tf.float32, name='X')
+    Y = tf.placeholder(shape=None, dtype=tf.float32, name='Y')
+    w = tf.Variable(tf.zeros(3), name='W')
+    bias = tf.Variable(0.0, name='BIAS')
 
-        Y_col = tf.reshape(Y, (-1, 1))
-        # loss = tf.reduce_mean(tf.square(hyp - Y_col))
-        reg = tf.scalar_mul(lambdas[l], tf.square(w_col))  # lambdas[l] = lb
-        loss = tf.add(tf.reduce_mean(tf.square(hyp - Y_col)), reg)
-        opt_op = tf.train.AdamOptimizer().minimize(loss)  # koristiti ovo
+    w_col = tf.reshape(w, (3, 1), name='W_COL')
+    hyp = tf.add(tf.matmul(X, w_col), bias, name='HYP')
+
+    Y_col = tf.reshape(Y, (-1, 1), name='Y_col')
+    # loss = tf.reduce_mean(tf.square(hyp - Y_col))
+    reg = tf.scalar_mul(lambdas[l], tf.square(w_col), name='REG')  # lambdas[l] = lb
+    loss = tf.add(tf.reduce_mean(tf.square(hyp - Y_col)), reg, name='LOSS')
+    opt_op = tf.train.AdamOptimizer().minimize(loss)  # koristiti ovo
+
+    # Kod za generisanje 2c:
+    # tbc = TensorBoardColab()
+    # writer = tbc.get_writer()
+    # writer.add_graph(tf.get_default_graph())
+    # writer.flush()
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
@@ -68,7 +74,7 @@ for l in range(0, 7):
         for epoch in range(nb_epochs):
             epoch_loss = 0
             for sample in range(nb_samples):
-                feed = {X: data_help['x'][sample].reshape((1, i)),
+                feed = {X: data_help['x'][sample].reshape((1, 3)),
                         Y: data_help['y'][sample]}
                 _, curr_loss = sess.run([opt_op, loss], feed_dict=feed)
                 epoch_loss += curr_loss
@@ -81,20 +87,16 @@ for l in range(0, 7):
         w_val = sess.run(w)
         bias_val = sess.run(bias)
         print('w = ', w_val, 'bias = ', bias_val)
-        xs = create_feature_matrix(np.linspace(-2, 4, 100), i)
+        xs = create_feature_matrix(np.linspace(-2, 4, 100), 3)
         hyp_val = sess.run(hyp, feed_dict={X: xs})
         plt.plot(xs[:, 0].tolist(), hyp_val.tolist(), color='g')
         final_loss = sess.run(loss, feed_dict={X: data_help['x'], Y: data_help['y']})  # ???
         print("Final loss: {}".format(final_loss))
         stepeni[l] = final_loss
-        # if l is 6:  # tensorboard --logdir=output
-        #             # Komanda da se napravi graf. Kod mene iz nekog razloga ne radi i nisam uspeo da popravim.
-        #     writer = tf.summary.FileWriter("output", sess.graph)
-        #     writer.close()
-
-writer = tf.summary.FileWriter('output')
-writer.add_graph(tf.get_default_graph())
-writer.flush()
+        if l is 6:  # tensorboard --logdir=output
+            # Komanda da se napravi graf. Kod mene iz nekog razloga ne radi i nisam uspeo da popravim.
+            writer = tf.summary.FileWriter("output", sess.graph)
+            writer.close()
 
 plt.xlim([-2, 4])
 plt.ylim([-3, 4])
@@ -109,8 +111,18 @@ plt.ylabel('LOSS')
 
 plt.show()
 
+# Komentar:
+# Na prvom grafu mozemo primetiti da je velicina lambde proporcijalna sa linearnoscu,
+# sto je veca lamda to je vise linearna.
+#
+# Na drugom grafiku mozemo primetiti da je loss proporcijalan sa lambdom,
+# sto je lambda veca to je veci loss.
+# Najbolji trosak je kada je lambda izmedju 0 i 1.
 
-# TODO Napisati komentar i napraviti preko TensorBuild prikaz grafa
+
+
+
+
 
 
 

@@ -168,4 +168,7 @@ plt.xlabel('K')
 plt.ylabel('ACCURACY')
 plt.show()
 
-# TODO Napraviti grafik i napisati komentar
+# Komentar:
+# U prvom primeur za prvih 5 K accuracy naglo skace i opada dok je od 6og fiksni na 100.
+# Dok u drugom pri koriscenju randomizacije i normalizacije prvih 5 K je sa najlosijom accuracy,
+# a ostatak je sa vecom ali moze da varira.
