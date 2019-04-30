@@ -32,7 +32,7 @@ lambdas = [0, 0.001, 0.01, 0.1, 1, 10, 100]
 data_help = dict()
 stepeni = dict()
 
-# for lb in lambdas:
+
 for l in range(0, 7):
     for i in range(1, nb_features + 1):
         data_help['x'] = data['x']
